@@ -1,0 +1,5 @@
+,CNTNT_ID,CNTNT_CATG_ID,CNTNT_CATG_NM,CNTNT_NM,INTC_CONT,CNTNT_CATG_HGRN_ID,ITEM_ID
+0,P000272203,20010300,도시개요,"후쿠오카 (福岡, Fukuoka)",아름다운 규슈의 중심도시 후쿠오카,20010000.0,-1
+413,[PAD],_,,pad_token_id,,,0
+414,[BOS],_,,bos_token_id,,,392
+415,[EOS],_,,eos_token_id,,,393
