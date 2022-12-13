@@ -2,7 +2,7 @@ import dash_bootstrap_components as dbc
 from dash import html, dcc, Output, Input
 
 from components.app import APP
-from pages import home, page1, page2
+from pages import home, gpt_step_gen, gpt_batch_gen, gnn_step_gen, gnn_batch_gen
 
 # the style arguments for the sidebar. We use position:fixed and a fixed width
 SIDEBAR_STYLE = {
@@ -31,8 +31,10 @@ def sidebar():
             dbc.Nav(
                 [
                     dbc.NavLink("Home", href="/", active="exact"),
-                    dbc.NavLink("GPT 단계별 생성", href="/step-gen", active="exact"),
-                    dbc.NavLink("GPT 일괄 생성", href="/batch-gen", active="exact"),
+                    dbc.NavLink("GPT 단계별 생성", href="/gpt-step-gen", active="exact"),
+                    dbc.NavLink("GPT 일괄 생성", href="/gpt-batch-gen", active="exact"),
+                    dbc.NavLink("GNN 단계별 생성", href="/gnn-step-gen", active="exact"),
+                    dbc.NavLink("GNN 일괄 생성", href="/gnn-batch-gen", active="exact"),
                 ],
                 vertical=True,
                 pills=True,
@@ -56,10 +58,14 @@ def main_layout():
 def render_page_content(pathname):
     if pathname == "/":
         return home.layout()
-    elif pathname == "/step-gen":
-        return page1.layout()
-    elif pathname == "/batch-gen":
-        return page2.layout()
+    elif pathname == "/gpt-step-gen":
+        return gpt_step_gen.layout()
+    elif pathname == "/gnn-step-gen":
+        return gnn_step_gen.layout()
+    elif pathname == "/gpt-batch-gen":
+        return gpt_batch_gen.layout()
+    elif pathname == "/gnn-batch-gen":
+        return gnn_batch_gen.layout()
     return html.Div(
         [
             html.H1("404: Not found", className="text-danger"),
