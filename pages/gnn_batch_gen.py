@@ -3,14 +3,13 @@ from typing import List
 import dash_bootstrap_components as dbc
 from dash import html, Output, Input, State, dcc, ctx
 
-from common.model.gpt2 import get_gtp_model
-from common.utils import get_metadata, get_table_source
+from common.utils import get_metadata, get_table_source, get_gnn_model
 from components.app import APP
 from components.tables import interactive_datatable, schedule_table
 
 METADATA = get_metadata()
 META, COLUMNS = get_table_source(METADATA)
-GPT = get_gtp_model()
+GNN = get_gnn_model()
 METADATA.index = METADATA['ITEM_ID']
 ITEM_MAPPER = METADATA.to_dict('index')
 PAGE_ID = 'gnn-batch'
@@ -35,7 +34,7 @@ def update_schedule(submit_clicks: int, reset_clicks: int, selected_row_ids: Lis
         schedule 테이블
     """
     if ctx.triggered_id == f'{PAGE_ID}-submit-button':
-        output = GPT.generate(selected_row_ids, max_len=30)
+        output = GNN.generate(selected_row_ids, max_len=30)
         selected_item = [ITEM_MAPPER[o] for o in output]
         return schedule_table(data=selected_item, page_id=PAGE_ID)
 
@@ -50,7 +49,7 @@ def layout():
     return html.Div(
         [
             dcc.Store(id=f'{PAGE_ID}-schedule-items', data=[]),
-            html.H3("일괄 일정 테이블"),
+            html.H3("GNN 일괄 일정 테이블"),
             interactive_datatable(f'{PAGE_ID}-interactive-table', META, COLUMNS, select_mode="multi"),
             dbc.Row(
                 [

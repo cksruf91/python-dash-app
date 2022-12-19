@@ -86,7 +86,7 @@ def layout() -> html.Div:
     return html.Div(
         [
             dcc.Store(id=f'{PAGE_ID}-schedule-items', data=[]),
-            html.H3("단계별 일정 테이블"),
+            html.H3("GPT 단계별 일정 테이블"),
             interactive_datatable(f'{PAGE_ID}-interactive-table', META, COLUMNS),
             dbc.Row(
                 [

@@ -4,14 +4,13 @@ import dash_bootstrap_components as dbc
 import pandas as pd
 from dash import html, Output, Input, State, dcc, ctx
 
-from common.model.gpt2 import get_gtp_model
-from common.utils import get_metadata, get_table_source
+from common.utils import get_metadata, get_table_source, get_gnn_model
 from components.app import APP
 from components.tables import interactive_datatable, schedule_table
 
 METADATA = get_metadata()
 META, COLUMNS = get_table_source(METADATA)
-GPT = get_gtp_model()
+MODEL = get_gnn_model()
 METADATA.index = METADATA['ITEM_ID']
 ITEM_MAPPER = METADATA.to_dict('index')
 PAGE_ID = 'gnn-step'
@@ -47,7 +46,7 @@ def summit_callback(submit_clicks: int, reset_clicks: int, selected_row_ids: Lis
 
     if ctx.triggered_id == f'{PAGE_ID}-submit-button':
         schedule_items += selected_row_ids
-        pred_items: List[int] = GPT.step_generate(batch=schedule_items, top_k=10)
+        pred_items: List[int] = MODEL.step_generate(batch=schedule_items, top_k=10)
         next_item_df = pd.DataFrame(
             [ITEM_MAPPER[item] for item in pred_items]
         )
@@ -86,7 +85,7 @@ def layout() -> html.Div:
     return html.Div(
         [
             dcc.Store(id=f'{PAGE_ID}-schedule-items', data=[]),
-            html.H3("단계별 일정 테이블"),
+            html.H3("GNN 단계별 일정 테이블"),
             interactive_datatable(f'{PAGE_ID}-interactive-table', META, COLUMNS),
             dbc.Row(
                 [
